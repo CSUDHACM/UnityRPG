@@ -44,6 +44,15 @@ TagManager:
   - name: Ground
     uniqueID: 4012772393
     locked: 0
-  - name: Player
-    uniqueID: 3032579059
+  - name: Ground Detail
+    uniqueID: 3306862911
+    locked: 0
+  - name: Obstacles
+    uniqueID: 2188619209
+    locked: 0
+  - name: Entities
+    uniqueID: 2211207969
+    locked: 0
+  - name: Overhead Detail
+    uniqueID: 209622649
     locked: 0
