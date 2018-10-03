@@ -41,7 +41,7 @@ public class Character : MonoBehaviour {
             playerStats.healthCurrent = playerStats.healthMax;
         else if (playerStats.healthCurrent <= 0)
         {
-            //TODO - DIE
+            //TODO: DIE
         }
     }
 
@@ -77,7 +77,7 @@ public class Character : MonoBehaviour {
     public void Experience(int gained)      //gain xp from quest/monster/whatever
     {
         playerStats.experience += gained;
-        while (playerStats.experience >= playerStats.nextLevelExperience)   //Look over again, i think the -= should be changed
+        while (playerStats.experience >= playerStats.nextLevelExperience)
         {
             playerStats.experience -= playerStats.nextLevelExperience;
             LevelUp();
@@ -89,9 +89,26 @@ public class Character : MonoBehaviour {
         playerStats.level++;
         playerStats.nextLevelExperience = (int)(playerStats.nextLevelExperience * 1.1);      //placeholder experience needed gain
         MaxHealthUpdate(10 * playerStats.level);
-        MaxManaUpdate(10 * playerStats.level);
         playerStats.healthCurrent = playerStats.healthMax;
         playerStats.manaCurrent = playerStats.manaMax;
+    }
+
+    public void MagicExperience(int gained)     //big spells should give more xp
+    {
+        playerStats.magicExperience += gained;
+        while (playerStats.magicExperience >= playerStats.nextMagicLevelExperience)
+        {
+            playerStats.magicExperience -= playerStats.nextMagicLevelExperience;
+            MagicLevelUp();
+        }
+    }
+
+    public void MagicLevelUp()
+    {
+        playerStats.magicLevel++;
+        playerStats.nextMagicLevelExperience = (int)(playerStats.nextMagicLevelExperience * 1.1);       //placeholder expereince needed gain
+        MaxManaUpdate(10 * playerStats.magicLevel);
+        ManaUpdate(10 * playerStats.magicLevel);
     }
 
     public int AttackSomething()    //if crit deviance <= -4, it is impossible to crit (without something else)
@@ -105,10 +122,10 @@ public class Character : MonoBehaviour {
         return Random.Range(min, max);
     }
 
-    public int ReceiveAttack(int damageReceived)
+    public int ReceiveAttack(int damageReceived, int unignorableDamage)
     {
-        int damageTaken = (int) ((damageReceived - playerStats.defense - playerStats.equippedArmor.GetArmorDefense())
-                                 * (1 - playerStats.equippedArmor.GetPercentDefense() - playerStats.percentDefense));
+        int damageTaken = (int) ((damageReceived - playerStats.defense - playerStats.equippedArmor.GetArmorDefense()) *
+                                 (1 - playerStats.equippedArmor.GetPercentDefense() - playerStats.percentDefense)) + unignorableDamage;
         HealthUpdate(damageTaken);
         return damageTaken;
     }
