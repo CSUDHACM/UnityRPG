@@ -8,13 +8,27 @@ public class PlayerController : MonoBehaviour {
     private float horizontalDir, verticalDir, lastX, lastY;     //horizontalDir & verticalDir determine the direction of the player inputs.
                                                                //lastX & lastY stores the last input in the appropriate axis for later use.
     private bool isMoving;      //Boolean isMoving determines whether the player is currently moving.
-    private Rigidbody2D playerRB;
+    private Rigidbody2D playerRB;   //Variable playerRB declared as RigidBody2D
+
+    private static bool playerExists;   //Variable to determine whether the player already exists in a scene, if so do not create a new
+                                            //player whenever entering another scene.
 
     void Start()
     {
         anim = GetComponent<Animator>();    //Gets Player's Animator component and stores it as an anim variable.
                                             //This allows for access to Animator's functions, used to determine walking animations.
         playerRB = GetComponent<Rigidbody2D>(); //Gets Player's RigidBody2D component.
+
+        if(!playerExists)
+        {
+            playerExists = true;    //Sets player exists to true to prevent duplicating player.
+            DontDestroyOnLoad(transform.gameObject);    //Prevents destroying the current player object whenever moving to another scene.
+        }
+        else
+        {
+            Destroy(transform.gameObject);  //Destroy player when unity duplicates player upon moving to an ew scene
+        }
+
     }
 
     void Update () {
